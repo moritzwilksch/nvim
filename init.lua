@@ -41,6 +41,26 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
 
+-- define treeesitter, load conditionally outside of VSCode
+treesitter = { -- Highlight, edit, and navigate code
+  'nvim-treesitter/nvim-treesitter',
+  build = ':TSUpdate',
+  config = function()
+    ---@diagnostic disable-next-line: missing-fields
+    require('nvim-treesitter.configs').setup {
+      ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'python', 'toml', 'sql' },
+      -- Autoinstall languages that are not installed
+      auto_install = true,
+      highlight = { enable = true },
+      indent = { enable = true },
+    }
+    --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+  end,
+}
+if vim.g.vscode then
+  treesitter = {}
+end
+
 -- [[ LSP ]]
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
@@ -115,6 +135,74 @@ require('lazy').setup({
       },
     },
   },
+  {
+    "windwp/nvim-autopairs",
+    -- Optional dependency
+    dependencies = { 'hrsh7th/nvim-cmp' },
+    config = function()
+      require("nvim-autopairs").setup {}
+      -- If you want to automatically add `(` after selecting a function or method
+      local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+      local cmp = require('cmp')
+      cmp.event:on(
+        'confirm_done',
+        cmp_autopairs.on_confirm_done()
+      )
+    end,
+  },
+ {
+  treesitter,
+  {
+    'ggandor/leap.nvim',
+    config = function()
+      require('leap').create_default_mappings()
+      require('leap').opts.special_keys.prev_target = ','
+      require('leap').opts.special_keys.next_target = ';'
+      require('leap').opts.special_keys.prev_group = '<bs>'
+      require('leap.user').set_repeat_keys('<cr>', '<bs>')
+    end,
+  },
+  {
+    'navarasu/onedark.nvim',
+    priority = 1000,
+    config = function()
+      require('onedark').setup {
+        style = 'darker',
+        colors = {
+          bg0 = '#101010',
+          purple = '#c549eb',
+          green = '#91db58',
+          red = '#f04351',
+        },
+      }
+      vim.cmd.colorscheme 'onedark'
+    end,
+  },
+  {
+    'kylechui/nvim-surround',
+    version = '*', -- Use for stability; omit to use `main` branch for the latest features
+    config = function()
+      require('nvim-surround').setup {
+        -- Configuration here, or leave empty to use defaults
+      }
+    end,
+  },
+  {
+    'jpalardy/vim-slime',
+    config = function()
+      vim.cmd.xmap('<leader>s', '<Plug>SlimeRegionSend')
+      vim.cmd.vmap('<leader>s', '<Plug>SlimeRegionSend')
+      vim.cmd.nmap('<leader>s', '<Plug>SlimeParagraphSend')
+      vim.cmd.nmap('<leader>s', '<Plug>SlimeSendCell')
+      vim.g.slime_target = 'tmux'
+      vim.g.slime_paste_file = '/home/moritz/.slime_paste'
+      vim.g.slime_cell_delimiter = '# %%'
+      vim.g.slime_default_config = { socket_name = 'default', target_pane = '1' }
+      vim.g.slime_bracketed_paste = 1
+      vim.g.slime_dont_ask_default = 1
+    end,
+  },
+}
 
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
@@ -287,7 +375,7 @@ require('lazy').setup({
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
-          ['<Tab>'] = cmp.mapping.confirm { select = true },
+          ['<C-y>'] = cmp.mapping.confirm { select = true },
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
@@ -322,26 +410,9 @@ require('lazy').setup({
     end,
   },
 
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`
-    'folke/tokyonight.nvim',
-    priority = 1000, -- make sure to load this before all the other start plugins
-    init = function()
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
-
-      -- You can configure highlights by doing something like
-      vim.cmd.hi 'Comment gui=none'
-    end,
-  },
 
   -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  -- { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
