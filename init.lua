@@ -352,28 +352,35 @@ require('lazy').setup({'tpope/vim-sleuth', -- Detect tabstop and shiftwidth auto
                 map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
                 map('gh', vim.lsp.buf.hover, 'Hover Documentation')
 
-                vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
                 vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
                 vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
                 vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
                 vim.keymap.set('n', '<space>wl', function()
                     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
                 end, opts)
-                -- vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
                 vim.keymap.set('n', '<space>f', function()
                     vim.lsp.buf.format {
                         async = true
                     }
                 end, opts)
+
+                -- The following two autocommands are used to highlight references of the
+                -- word under your cursor when your cursor rests there for a little while.
+                -- When you move your cursor, the highlights will be cleared (the second autocommand).
+                local client = vim.lsp.get_client_by_id(ev.data.client_id)
+                if client and client.server_capabilities.documentHighlightProvider then
+                    vim.api.nvim_create_autocmd({'CursorHold', 'CursorHoldI'}, {
+                        buffer = ev.buf,
+                        callback = vim.lsp.buf.document_highlight
+                    })
+
+                    vim.api.nvim_create_autocmd({'CursorMoved', 'CursorMovedI'}, {
+                        buffer = ev.buf,
+                        callback = vim.lsp.buf.clear_references
+                    })
+                end
             end
         })
-
-        local capabilities = vim.lsp.protocol.make_client_capabilities()
-        capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-
-        local servers = {
-            pyright = {}
-        }
     end
 }, { -- Autoformat
     'stevearc/conform.nvim',
@@ -385,55 +392,23 @@ require('lazy').setup({'tpope/vim-sleuth', -- Detect tabstop and shiftwidth auto
         },
         formatters_by_ft = {
             lua = {'stylua'},
-            python = {"ruff"}
+            python = {"ruff_format", "ruff_fix"}
         }
     }
 }, { -- Autocompletion
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
     dependencies = { -- Snippet Engine & its associated nvim-cmp source
-    -- {
-    --   'L3MON4D3/LuaSnip',
-    --   build = (function()
-    --     -- Build Step is needed for regex support in snippets
-    --     -- This step is not supported in many windows environments
-    --     -- Remove the below condition to re-enable on windows
-    --     if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
-    --       return
-    --     end
-    --     return 'make install_jsregexp'
-    --   end)(),
-    -- },
-    -- 'saadparwaiz1/cmp_luasnip',
     -- Adds other completion capabilities.
     --  nvim-cmp does not ship with all sources by default. They are split
     --  into multiple repos for maintenance purposes.
-    'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-path' -- If you want to add a bunch of pre-configured snippets,
-    --    you can use this plugin to help you. It even has snippets
-    --    for various frameworks/libraries/etc. but you will have to
-    --    set up the ones that are useful for you.
-    -- 'rafamadriz/friendly-snippets',
-    },
+    'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-path'},
     config = function()
-        -- See `:help cmp`
         local cmp = require 'cmp'
-        -- local luasnip = require 'luasnip'
-        -- luasnip.config.setup {}
-
         cmp.setup {
-            -- snippet = {
-            --   expand = function(args)
-            --     luasnip.lsp_expand(args.body)
-            --   end,
-            -- },
             completion = {
                 completeopt = 'menu,menuone,noinsert'
             },
-
-            -- For an understanding of why these mappings were
-            -- chosen, you will need to read `:help ins-completion`
-            --
-            -- No, but seriously. Please read `:help ins-completion`, it is really good!
             mapping = cmp.mapping.preset.insert {
                 -- Select the [n]ext item
                 ['<C-n>'] = cmp.mapping.select_next_item(),
@@ -443,7 +418,7 @@ require('lazy').setup({'tpope/vim-sleuth', -- Detect tabstop and shiftwidth auto
                 -- Accept ([y]es) the completion.
                 --  This will auto-import if your LSP supports it.
                 --  This will expand snippets if the LSP sent a snippet.
-                ['<C-y>'] = cmp.mapping.confirm {
+                ['<Tab>'] = cmp.mapping.confirm {
                     select = true
                 },
 
@@ -478,16 +453,16 @@ require('lazy').setup({'tpope/vim-sleuth', -- Detect tabstop and shiftwidth auto
             }, {
                 name = 'path'
             }}
+
+        }
+        -- Set up lspconfig.
+        local capabilities = require('cmp_nvim_lsp').default_capabilities()
+        -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+        require('lspconfig')['pyright'].setup {
+            capabilities = capabilities
         }
     end
-}, -- Highlight todo, notes, etc in comments
--- { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
--- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
--- init.lua. If you want these files, they are in the repository, so you can just download them and
--- put them in the right spots if you want.
--- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for kickstart
---
---  Here are some example plugins that I've included in the kickstart repository.
+}, --  Here are some example plugins that I've included in the kickstart repository.
 --  Uncomment any of the lines below to enable them (you will need to restart nvim).
 --
 -- require 'kickstart.plugins.debug',
