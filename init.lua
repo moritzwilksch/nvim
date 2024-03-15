@@ -247,8 +247,16 @@ require('lazy').setup({'tpope/vim-sleuth', -- Detect tabstop and shiftwidth auto
     config = function()
         -- [[ Configure Telescope ]]
         require('telescope').setup {
-            extensions = {
-                ['ui-select'] = {require('telescope.themes').get_dropdown()}
+            defaults = {
+                layout_config = {
+                    horizontal = {
+                        width = 0.75
+                    }
+                },
+                path_display = {"smart"},
+                extensions = {
+                    ['ui-select'] = {require('telescope.themes').get_dropdown()}
+                }
             }
         }
 
