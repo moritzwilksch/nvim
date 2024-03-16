@@ -136,6 +136,33 @@ require('lazy').setup({'tpope/vim-sleuth', -- Detect tabstop and shiftwidth auto
         }
     }
 }, {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    config = function()
+        require'nvim-treesitter.configs'.setup {
+            textobjects = {
+                select = {
+                    enable = true,
+                    lookahead = true,
+                    keymaps = {
+                        ["af"] = "@function.outer",
+                        ["if"] = "@function.inner",
+                        ["ac"] = "@class.outer",
+                        ["ic"] = {
+                            query = "@class.inner",
+                            desc = "Select inner part of a class region"
+                        }
+                    },
+                    selection_modes = {
+                        ['@parameter.outer'] = 'v', -- charwise
+                        ['@function.outer'] = 'V', -- linewise
+                        ['@class.outer'] = '<c-v>' -- blockwise
+                    },
+                    include_surrounding_whitespace = true
+                }
+            }
+        }
+    end
+}, {
     "windwp/nvim-autopairs",
     -- Optional dependency
     dependencies = {'hrsh7th/nvim-cmp'},
