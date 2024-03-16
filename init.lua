@@ -179,10 +179,10 @@ require('lazy').setup({'tpope/vim-sleuth', -- Detect tabstop and shiftwidth auto
 }, {
     'jpalardy/vim-slime',
     config = function()
-        vim.cmd.xmap('<leader>s', '<Plug>SlimeRegionSend')
-        vim.cmd.vmap('<leader>s', '<Plug>SlimeRegionSend')
-        vim.cmd.nmap('<leader>s', '<Plug>SlimeParagraphSend')
-        vim.cmd.nmap('<leader>s', '<Plug>SlimeSendCell')
+        vim.cmd.xmap('<leader>a', '<Plug>SlimeRegionSend')
+        vim.cmd.vmap('<leader>a', '<Plug>SlimeRegionSend')
+        vim.cmd.nmap('<leader>a', '<Plug>SlimeParagraphSend')
+        vim.cmd.nmap('<leader>a', '<Plug>SlimeSendCell')
         vim.g.slime_target = 'tmux'
         vim.g.slime_paste_file = '/home/moritz/.slime_paste'
         vim.g.slime_cell_delimiter = '# %%'
@@ -470,7 +470,7 @@ require('lazy').setup({'tpope/vim-sleuth', -- Detect tabstop and shiftwidth auto
             capabilities = capabilities
         }
     end
-}, --  Here are some example plugins that I've included in the kickstart repository.
+} --  Here are some example plugins that I've included in the kickstart repository.
 --  Uncomment any of the lines below to enable them (you will need to restart nvim).
 --
 -- require 'kickstart.plugins.debug',
@@ -480,9 +480,7 @@ require('lazy').setup({'tpope/vim-sleuth', -- Detect tabstop and shiftwidth auto
 --
 --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
 --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-{
-    import = 'custom.plugins'
-}}, {
+}, {
     ui = {
         -- If you have a Nerd Font, set icons to an empty table which will use the
         -- default lazy.nvim defined Nerd Font icons otherwise define a unicode icons table
