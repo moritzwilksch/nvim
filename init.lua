@@ -11,7 +11,7 @@ vim.opt.ignorecase = true -- Case-insensitive searching UNLESS \C or capital in 
 vim.opt.smartcase = true
 vim.opt.signcolumn = 'yes'
 vim.opt.updatetime = 250
-vim.opt.timeoutlen = 300
+-- vim.opt.timeoutlen = 300
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.list = true
@@ -479,6 +479,17 @@ require('lazy').setup({
     },
     { -- Autoformat
         'stevearc/conform.nvim',
+          keys = {
+          {
+            -- Customize or remove this keymap to your liking
+            "<leader>f",
+            function()
+              require("conform").format({ async = true, lsp_fallback = true })
+            end,
+            mode = "",
+            desc = "Format buffer",
+          },
+        },
         opts = {
             notify_on_error = false,
             format_on_save = {
@@ -494,7 +505,7 @@ require('lazy').setup({
                     'ruff_fix'
                 }
             }
-        }
+        },
     },
     { -- Autocompletion
         'hrsh7th/nvim-cmp',
