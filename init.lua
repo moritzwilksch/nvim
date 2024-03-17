@@ -207,6 +207,7 @@ require('lazy').setup({
             require('leap').opts.special_keys.next_target = ';'
             require('leap').opts.special_keys.prev_group = '<bs>'
             require('leap.user').set_repeat_keys('<cr>', '<bs>')
+            require('leap').opts.keys = { "S", mode = { "n", "x", "o" }, desc = "Leap backward to" }
         end
     },
     {
