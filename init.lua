@@ -216,10 +216,11 @@ require('lazy').setup({
             require('onedark').setup {
                 style = 'darker',
                 colors = {
-                    bg0 = '#101010',
+                    bg0 = '#0f0f0f',
+                    fg = '#e4e7ed',
                     purple = '#c549eb',
                     green = '#91db58',
-                    red = '#f04351'
+                    red = '#fc4c5a'
                 }
             }
             vim.cmd.colorscheme 'onedark'
