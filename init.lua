@@ -479,16 +479,19 @@ require('lazy').setup({
     },
     { -- Autoformat
         'stevearc/conform.nvim',
-          keys = {
-          {
-            -- Customize or remove this keymap to your liking
-            "<leader>f",
-            function()
-              require("conform").format({ async = true, lsp_fallback = true })
-            end,
-            mode = "",
-            desc = "Format buffer",
-          },
+        keys = {
+            {
+                -- Customize or remove this keymap to your liking
+                '<leader>f',
+                function()
+                    require('conform').format({
+                        async = true,
+                        lsp_fallback = true
+                    })
+                end,
+                mode = '',
+                desc = 'Format buffer'
+            }
         },
         opts = {
             notify_on_error = false,
@@ -505,7 +508,7 @@ require('lazy').setup({
                     'ruff_fix'
                 }
             }
-        },
+        }
     },
     { -- Autocompletion
         'hrsh7th/nvim-cmp',
