@@ -58,8 +58,14 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', {
 })
 
 -- cycle buffers
-vim.keymap.set('n', '<S-l>', ':bnext<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<S-h>', ':bprev<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<S-l>', ':bnext<CR>', {
+    noremap = true,
+    silent = true
+})
+vim.keymap.set('n', '<S-h>', ':bprev<CR>', {
+    noremap = true,
+    silent = true
+})
 
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
