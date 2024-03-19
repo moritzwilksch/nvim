@@ -56,6 +56,12 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', {
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', {
     desc = 'Move focus to the upper window'
 })
+vim.keymap.set('n', '<leader>o', 'o<Esc>', {
+    desc = 'Insert a newline below the cursor'
+})
+vim.keymap.set('n', '<leader>O', 'O<Esc>', {
+    desc = 'Insert a newline below the cursor'
+})
 
 -- cycle buffers
 vim.keymap.set('n', '<S-l>', ':bnext<CR>', {
