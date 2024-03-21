@@ -251,6 +251,61 @@ require('lazy').setup({
         end
     },
     {
+        'nvim-lualine/lualine.nvim',
+        dependencies = {
+            'nvim-tree/nvim-web-devicons'
+        },
+        config = function()
+            require('lualine').setup {
+                options = {
+                    icons_enabled = false
+                },
+                sections = {
+                    lualine_a = {
+                        'mode'
+                    },
+                    lualine_b = {
+                        'branch',
+                        'diff',
+                        'diagnostics'
+                    },
+                    lualine_c = {
+                        {
+                            'filename',
+                            path = 1,
+                            shorting_target = 70
+                        }
+                    },
+                    lualine_x = {
+                        'filetype'
+                    },
+                    lualine_y = {
+                        'progress'
+                    },
+                    lualine_z = {
+                        'location'
+                    }
+                },
+                inactive_sections = {
+                    lualine_a = {},
+                    lualine_b = {},
+                    lualine_c = {
+                        'filename'
+                    },
+                    lualine_x = {
+                        'location'
+                    },
+                    lualine_y = {},
+                    lualine_z = {}
+                },
+                tabline = {},
+                winbar = {},
+                inactive_winbar = {},
+                extensions = {}
+            }
+        end
+    },
+    {
         'kylechui/nvim-surround',
         version = '*', -- Use for stability; omit to use `main` branch for the latest features
         config = function()
