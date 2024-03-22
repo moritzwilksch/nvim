@@ -214,6 +214,9 @@ require('lazy').setup({
     },
     treesitter,
     {
+        'nvim-treesitter/nvim-treesitter-context'
+    },
+    {
         'ggandor/leap.nvim',
         config = function()
             vim.keymap.set({
