@@ -24,6 +24,7 @@ vim.opt.listchars = {
 vim.opt.inccommand = 'split'
 vim.opt.cursorline = true
 vim.opt.scrolloff = 10
+vim.opt.breakindent = true
 
 -- [[ Basic Keymaps ]]
 vim.opt.hlsearch = true
@@ -146,6 +147,11 @@ require('lazy').setup({
     -- "gc" to comment visual regions/lines
     {
         'numToStr/Comment.nvim',
+        opts = {}
+    },
+    {
+        'lukas-reineke/indent-blankline.nvim',
+        main = 'ibl',
         opts = {}
     },
     { -- Adds git related signs to the gutter, as well as utilities for managing changes
