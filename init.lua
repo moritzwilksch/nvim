@@ -1,4 +1,5 @@
 -- [[ Setting options ]]
+local user_home_dir = vim.fn.expand('$HOME') .. "/"
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true
@@ -343,7 +344,7 @@ require('lazy').setup({
             vim.cmd.nmap('<leader>a', '<Plug>SlimeParagraphSend')
             vim.cmd.nmap('<leader>a', '<Plug>SlimeSendCell')
             vim.g.slime_target = 'tmux'
-            vim.g.slime_paste_file = '/home/moritz/.slime_paste'
+            vim.g.slime_paste_file = user_home_dir .. '.slime_paste'
             vim.g.slime_cell_delimiter = '# %%'
             vim.g.slime_default_config = {
                 socket_name = 'default',
