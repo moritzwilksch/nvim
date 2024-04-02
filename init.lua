@@ -266,7 +266,8 @@ require('lazy').setup({
                     purple = '#c549eb',
                     green = '#91db58',
                     red = '#ff616d',
-                    orange = '#ffae61'
+                    orange = '#ffae61',
+                    grey = '#747d8f'
                 }
             }
             vim.cmd.colorscheme 'onedark'
