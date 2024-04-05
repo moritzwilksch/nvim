@@ -261,6 +261,9 @@ require('lazy').setup({
         config = function()
             require('onedark').setup {
                 style = 'darker',
+                code_style = {
+                  comments = 'none'
+                },
                 colors = {
                     bg0 = '#0c0c0c',
                     fg = '#e4e7ed',
