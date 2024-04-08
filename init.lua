@@ -1,5 +1,5 @@
 -- [[ Setting options ]]
-local user_home_dir = vim.fn.expand('$HOME') .. "/"
+local user_home_dir = vim.fn.expand('$HOME') .. '/'
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true
@@ -80,40 +80,6 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
 
--- define treeesitter, load conditionally outside of VSCode
-treesitter = { -- Highlight, edit, and navigate code
-    'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
-    config = function()
-        ---@diagnostic disable-next-line: missing-fields
-        require('nvim-treesitter.configs').setup {
-            ensure_installed = {
-                'bash',
-                'c',
-                'html',
-                'lua',
-                'markdown',
-                'vim',
-                'vimdoc',
-                'python',
-                'toml',
-                'sql'
-            },
-            -- Autoinstall languages that are not installed
-            auto_install = true,
-            highlight = {
-                enable = true
-            },
-            indent = {
-                enable = true
-            }
-        }
-    end
-}
-if vim.g.vscode then
-    -- treesitter with vscode-neovim messes up vscode color scheme
-    treesitter = {}
-end
 
 -- [[ Basic Autocommands ]]
 -- Highlight when yanking (copying) text
@@ -149,6 +115,35 @@ require('lazy').setup({
     {
         'numToStr/Comment.nvim',
         opts = {}
+    },
+    { -- Highlight, edit, and navigate code
+        'nvim-treesitter/nvim-treesitter',
+        build = ':TSUpdate',
+        config = function()
+            ---@diagnostic disable-next-line: missing-fields
+            require('nvim-treesitter.configs').setup {
+                ensure_installed = {
+                    'bash',
+                    'c',
+                    'html',
+                    'lua',
+                    'markdown',
+                    'vim',
+                    'vimdoc',
+                    'python',
+                    'toml',
+                    'sql'
+                },
+                -- Autoinstall languages that are not installed
+                auto_install = true,
+                highlight = {
+                    enable = not vim.g.vscode
+                },
+                indent = {
+                    enable = true
+                }
+            }
+        end
     },
     {
         'lukas-reineke/indent-blankline.nvim',
@@ -219,7 +214,6 @@ require('lazy').setup({
             cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
         end
     },
-    treesitter,
     {
         'nvim-treesitter/nvim-treesitter-context'
     },
@@ -262,7 +256,7 @@ require('lazy').setup({
             require('onedark').setup {
                 style = 'darker',
                 code_style = {
-                  comments = 'none'
+                    comments = 'none'
                 },
                 colors = {
                     bg0 = '#0c0c0c',
