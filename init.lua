@@ -80,7 +80,6 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
 
-
 -- [[ Basic Autocommands ]]
 -- Highlight when yanking (copying) text
 vim.api.nvim_create_autocmd('TextYankPost', {
@@ -266,7 +265,13 @@ require('lazy').setup({
                     red = '#ff616d',
                     orange = '#ffae61',
                     grey = '#747d8f'
+                },
+                highlights = {
+                    MatchParen = {
+                        fg = '#ffffff'
+                    }
                 }
+
             }
             vim.cmd.colorscheme 'onedark'
         end
