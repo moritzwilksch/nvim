@@ -268,6 +268,7 @@ require('lazy').setup({
                 },
                 highlights = {
                     MatchParen = {
+                        bg = '#666666',
                         fg = '#ffffff'
                     }
                 }
