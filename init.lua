@@ -268,6 +268,7 @@ require('lazy').setup({
                 },
                 highlights = {
                     MatchParen = {
+                        -- https://github.com/alacritty/alacritty/issues/2398
                         bg = '#666666',
                         fg = '#ffffff'
                     }
