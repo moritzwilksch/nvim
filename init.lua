@@ -131,6 +131,8 @@ require('lazy').setup({
                     'vimdoc',
                     'python',
                     'toml',
+                    'yaml',
+                    'json',
                     'sql'
                 },
                 -- Autoinstall languages that are not installed
