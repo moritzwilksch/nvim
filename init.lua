@@ -4,6 +4,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true
 vim.opt.pumheight = 15 -- max number of entries in completion window
+vim.opt.guicursor:append("a:blinkon1")
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.mouse = 'a'
