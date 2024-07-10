@@ -66,6 +66,9 @@ vim.keymap.set('n', '<leader>o', 'o<Esc>', {
 vim.keymap.set('n', '<leader>O', 'O<Esc>', {
     desc = 'Insert a newline below the cursor'
 })
+vim.keymap.set('v', 'o', 'ozz', {
+    desc = 'Other end of visual selection + center'
+})
 
 -- cycle buffers
 vim.keymap.set('n', '<S-l>', ':bnext<CR>', {
