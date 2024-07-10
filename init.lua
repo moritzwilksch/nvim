@@ -513,8 +513,9 @@ require('lazy').setup({
     {
         'neovim/nvim-lspconfig',
         config = function()
-            require('lspconfig').pyright.setup {}
-            require('lspconfig').ruff_lsp.setup {}
+            if not vim.g.vscode then
+              require('lspconfig').pyright.setup {}
+              require('lspconfig').ruff_lsp.setup {}
 
             vim.api.nvim_create_autocmd('LspAttach', {
                 group = vim.api.nvim_create_augroup('UserLspConfig', {}),
@@ -580,6 +581,7 @@ require('lazy').setup({
                     end
                 end
             })
+            end
         end
     },
     { -- Autoformat
