@@ -515,7 +515,7 @@ require('lazy').setup({
         config = function()
             if not vim.g.vscode then
               require('lspconfig').pyright.setup {}
-              require('lspconfig').ruff_lsp.setup {}
+              require('lspconfig').ruff.setup {}
 
             vim.api.nvim_create_autocmd('LspAttach', {
                 group = vim.api.nvim_create_augroup('UserLspConfig', {}),
