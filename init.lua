@@ -4,7 +4,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true
 vim.opt.pumheight = 15 -- max number of entries in completion window
-vim.opt.guicursor:append("a:blinkon1")
+vim.opt.guicursor:append('a:blinkon1')
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.mouse = 'a'
@@ -369,31 +369,52 @@ require('lazy').setup({
         'folke/which-key.nvim',
         event = 'VimEnter', -- Sets the loading event to 'VimEnter'
         config = function() -- This is the function that runs, AFTER loading
-            require('which-key').setup()
+            local wk = require('which-key')
+            wk.setup()
 
             -- Document existing key chains
-            require('which-key').register {
-                ['<leader>c'] = {
-                    name = '[C]ode',
-                    _ = 'which_key_ignore'
+            wk.add({
+                {
+                    '<leader>c',
+                    group = '[C]ode'
                 },
-                ['<leader>d'] = {
-                    name = '[D]ocument',
-                    _ = 'which_key_ignore'
+                {
+                    '<leader>c_',
+                    hidden = true
                 },
-                ['<leader>r'] = {
-                    name = '[R]ename',
-                    _ = 'which_key_ignore'
+                {
+                    '<leader>d',
+                    group = '[D]ocument'
                 },
-                ['<leader>s'] = {
-                    name = '[S]earch',
-                    _ = 'which_key_ignore'
+                {
+                    '<leader>d_',
+                    hidden = true
                 },
-                ['<leader>w'] = {
-                    name = '[W]orkspace',
-                    _ = 'which_key_ignore'
+                {
+                    '<leader>r',
+                    group = '[R]ename'
+                },
+                {
+                    '<leader>r_',
+                    hidden = true
+                },
+                {
+                    '<leader>s',
+                    group = '[S]earch'
+                },
+                {
+                    '<leader>s_',
+                    hidden = true
+                },
+                {
+                    '<leader>w',
+                    group = '[W]orkspace'
+                },
+                {
+                    '<leader>w_',
+                    hidden = true
                 }
-            }
+            })
         end
     },
     { -- Fuzzy Finder (files, lsp, etc)
@@ -514,73 +535,73 @@ require('lazy').setup({
         'neovim/nvim-lspconfig',
         config = function()
             if not vim.g.vscode then
-              require('lspconfig').pyright.setup {}
-              require('lspconfig').ruff.setup {}
+                require('lspconfig').pyright.setup {}
+                require('lspconfig').ruff.setup {}
 
-            vim.api.nvim_create_autocmd('LspAttach', {
-                group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-                callback = function(ev)
-                    -- Enable completion triggered by <c-x><c-o>
-                    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+                vim.api.nvim_create_autocmd('LspAttach', {
+                    group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+                    callback = function(ev)
+                        -- Enable completion triggered by <c-x><c-o>
+                        vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
-                    -- Buffer local mappings.
-                    -- See `:help vim.lsp.*` for documentation on any of the below functions
-                    local opts = {
-                        buffer = ev.buf
-                    }
-
-                    -- helper function
-                    local map = function(keys, func, desc)
-                        vim.keymap.set('n', keys, func, {
-                            buffer = ev.buf,
-                            desc = 'LSP: ' .. desc
-                        })
-                    end
-
-                    --  To jump back, press <C-t>.
-                    map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-                    map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-                    map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-                    map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-                    map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-                    map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-                    map('gh', vim.lsp.buf.hover, 'Hover Documentation')
-
-                    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
-                    vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
-                    vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
-                    vim.keymap.set('n', '<space>wl', function()
-                        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-                    end, opts)
-                    vim.keymap.set('n', '<space>f', function()
-                        vim.lsp.buf.format {
-                            async = true
+                        -- Buffer local mappings.
+                        -- See `:help vim.lsp.*` for documentation on any of the below functions
+                        local opts = {
+                            buffer = ev.buf
                         }
-                    end, opts)
 
-                    -- The following two autocommands are used to highlight references of the
-                    -- word under your cursor when your cursor rests there for a little while.
-                    -- When you move your cursor, the highlights will be cleared (the second autocommand).
-                    local client = vim.lsp.get_client_by_id(ev.data.client_id)
-                    if client and client.server_capabilities.documentHighlightProvider then
-                        vim.api.nvim_create_autocmd({
-                            'CursorHold',
-                            'CursorHoldI'
-                        }, {
-                            buffer = ev.buf,
-                            callback = vim.lsp.buf.document_highlight
-                        })
+                        -- helper function
+                        local map = function(keys, func, desc)
+                            vim.keymap.set('n', keys, func, {
+                                buffer = ev.buf,
+                                desc = 'LSP: ' .. desc
+                            })
+                        end
 
-                        vim.api.nvim_create_autocmd({
-                            'CursorMoved',
-                            'CursorMovedI'
-                        }, {
-                            buffer = ev.buf,
-                            callback = vim.lsp.buf.clear_references
-                        })
+                        --  To jump back, press <C-t>.
+                        map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+                        map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+                        map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+                        map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+                        map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+                        map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+                        map('gh', vim.lsp.buf.hover, 'Hover Documentation')
+
+                        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+                        vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+                        vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+                        vim.keymap.set('n', '<space>wl', function()
+                            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+                        end, opts)
+                        vim.keymap.set('n', '<space>f', function()
+                            vim.lsp.buf.format {
+                                async = true
+                            }
+                        end, opts)
+
+                        -- The following two autocommands are used to highlight references of the
+                        -- word under your cursor when your cursor rests there for a little while.
+                        -- When you move your cursor, the highlights will be cleared (the second autocommand).
+                        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+                        if client and client.server_capabilities.documentHighlightProvider then
+                            vim.api.nvim_create_autocmd({
+                                'CursorHold',
+                                'CursorHoldI'
+                            }, {
+                                buffer = ev.buf,
+                                callback = vim.lsp.buf.document_highlight
+                            })
+
+                            vim.api.nvim_create_autocmd({
+                                'CursorMoved',
+                                'CursorMovedI'
+                            }, {
+                                buffer = ev.buf,
+                                callback = vim.lsp.buf.clear_references
+                            })
+                        end
                     end
-                end
-            })
+                })
             end
         end
     },
