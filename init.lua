@@ -80,6 +80,12 @@ vim.keymap.set('n', '<S-h>', ':bprev<CR>', {
     silent = true
 })
 
+-- vscode find all refs
+vim.api.nvim_set_keymap('n', '<C-w>gr', "<Cmd>lua require('vscode').action('references-view.findReferences')<CR>", {
+        noremap = true,
+        silent = true
+})
+
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
