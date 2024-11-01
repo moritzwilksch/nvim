@@ -81,9 +81,9 @@ vim.keymap.set('n', '<S-h>', ':bprev<CR>', {
 })
 
 -- vscode find all refs
-vim.api.nvim_set_keymap('n', '<C-w>gr', "<Cmd>lua require('vscode').action('references-view.findReferences')<CR>", {
-        noremap = true,
-        silent = true
+vim.api.nvim_set_keymap('n', '<C-w>gr', '<Cmd>lua require(\'vscode\').action(\'references-view.findReferences\')<CR>', {
+    noremap = true,
+    silent = true
 })
 
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
@@ -100,6 +100,17 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     }),
     callback = function()
         vim.highlight.on_yank()
+    end
+})
+
+-- Enter in quickfix list should jump
+vim.api.nvim_create_autocmd('BufReadPost', {
+    pattern = 'quickfix',
+    callback = function()
+        vim.api.nvim_buf_set_keymap(0, 'n', '<CR>', '<CR>', {
+            noremap = true,
+            silent = true
+        })
     end
 })
 
@@ -541,7 +552,6 @@ require('lazy').setup({
         'neovim/nvim-lspconfig',
         config = function()
             if not vim.g.vscode then
-                require('lspconfig').pyright.setup {}
                 require('lspconfig').ruff.setup {}
 
                 vim.api.nvim_create_autocmd('LspAttach', {
@@ -689,10 +699,10 @@ require('lazy').setup({
             require('lspconfig')['pyright'].setup {
                 capabilities = capabilities,
                 settings = {
-                        python = {
-                            pythonPath = vim.fn.getenv("CONDA_PREFIX").. "/bin/python" 
-                        },
-                },
+                    python = {
+                        pythonPath = vim.fn.getenv('CONDA_PREFIX') .. '/bin/python'
+                    }
+                }
             }
         end
     } --  Here are some example plugins that I've included in the kickstart repository.
