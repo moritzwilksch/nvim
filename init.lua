@@ -688,6 +688,12 @@ require('lazy').setup({
             -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
             require('lspconfig')['pyright'].setup {
                 capabilities = capabilities
+                capabilities = capabilities,
+                settings = {
+                        python = {
+                            pythonPath = vim.fn.getenv("CONDA_PREFIX").. "/bin/python" 
+                        },
+                },
             }
         end
     } --  Here are some example plugins that I've included in the kickstart repository.
