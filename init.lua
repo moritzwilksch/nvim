@@ -224,20 +224,6 @@ require('lazy').setup({
         end
     },
     {
-        'windwp/nvim-autopairs',
-        -- Optional dependency
-        dependencies = {
-            'hrsh7th/nvim-cmp'
-        },
-        config = function()
-            require('nvim-autopairs').setup {}
-            -- If you want to automatically add `(` after selecting a function or method
-            local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-            local cmp = require('cmp')
-            cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
-        end
-    },
-    {
         'nvim-treesitter/nvim-treesitter-context'
     },
     {
@@ -303,59 +289,12 @@ require('lazy').setup({
         end
     },
     {
-        'nvim-lualine/lualine.nvim',
-        dependencies = {
-            'nvim-tree/nvim-web-devicons'
-        },
-        config = function()
-            require('lualine').setup {
-                options = {
-                    icons_enabled = false
-                },
-                sections = {
-                    lualine_a = {
-                        'mode'
-                    },
-                    lualine_b = {
-                        'branch',
-                        'diff',
-                        'diagnostics'
-                    },
-                    lualine_c = {
-                        {
-                            'filename',
-                            path = 1,
-                            shorting_target = 70
-                        }
-                    },
-                    lualine_x = {
-                        'filetype'
-                    },
-                    lualine_y = {
-                        'progress'
-                    },
-                    lualine_z = {
-                        'location'
-                    }
-                },
-                inactive_sections = {
-                    lualine_a = {},
-                    lualine_b = {},
-                    lualine_c = {
-                        'filename'
-                    },
-                    lualine_x = {
-                        'location'
-                    },
-                    lualine_y = {},
-                    lualine_z = {}
-                },
-                tabline = {},
-                winbar = {},
-                inactive_winbar = {},
-                extensions = {}
-            }
-        end
+      'echasnovski/mini.nvim',
+      version = '*',
+      config = function()
+        require('mini.statusline').setup()
+        require('mini.pairs').setup()
+      end
     },
     {
         'kylechui/nvim-surround',
@@ -700,7 +639,7 @@ require('lazy').setup({
                 capabilities = capabilities,
                 settings = {
                     python = {
-                        pythonPath = vim.fn.getenv('CONDA_PREFIX') .. '/bin/python'
+                        pythonPath = tostring(vim.fn.getenv('CONDA_PREFIX') or "/usr") .. '/bin/python'
                     }
                 }
             }
