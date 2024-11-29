@@ -289,12 +289,12 @@ require('lazy').setup({
         end
     },
     {
-      'echasnovski/mini.nvim',
-      version = '*',
-      config = function()
-        require('mini.statusline').setup()
-        require('mini.pairs').setup()
-      end
+        'echasnovski/mini.nvim',
+        version = '*',
+        config = function()
+            require('mini.statusline').setup()
+            require('mini.pairs').setup()
+        end
     },
     {
         'kylechui/nvim-surround',
@@ -639,7 +639,7 @@ require('lazy').setup({
                 capabilities = capabilities,
                 settings = {
                     python = {
-                        pythonPath = tostring(vim.fn.getenv('CONDA_PREFIX') or "/usr") .. '/bin/python'
+                        pythonPath = tostring(vim.fn.getenv('CONDA_PREFIX') or '/usr') .. '/bin/python'
                     }
                 }
             }
