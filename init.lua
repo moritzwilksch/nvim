@@ -30,6 +30,7 @@ vim.opt.scrolloff = 10
 vim.opt.breakindent = true
 
 -- [[ Basic Keymaps ]]
+vim.opt.incsearch = true
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
